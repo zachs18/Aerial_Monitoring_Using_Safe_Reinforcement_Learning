@@ -1,0 +1,24 @@
+name Simple DTS
+init {'Base1':1}
+;
+r0 {'prop':{'r0'}, 'position': (1.00, 1.00, 0.40)}
+r1 {'prop':{'r1'}, 'position': (1.00, 0.00, 0.40)}
+Base1 {'prop':{'Base1'}, 'position': (0.00, 1.00, 0.40)}
+r3 {'prop':{'r3'}, 'position': (0.00, 0.00, 0.40)}
+;
+r0 r0 {'duration': 1, 'edge_weight': 0.500000}
+r0 r1 {'duration': 1, 'edge_weight': 1.000000}
+r0 Base1 {'duration': 1, 'edge_weight': 1.000000}
+r0 r3 {'duration': 1, 'edge_weight': 1.414000}
+r1 r0 {'duration': 1, 'edge_weight': 1.000000}
+r1 r1 {'duration': 1, 'edge_weight': 0.500000}
+r1 Base1 {'duration': 1, 'edge_weight': 1.414000}
+r1 r3 {'duration': 1, 'edge_weight': 1.000000}
+Base1 r0 {'duration': 1, 'edge_weight': 1.000000}
+Base1 r1 {'duration': 1, 'edge_weight': 1.414000}
+Base1 Base1 {'duration': 1, 'edge_weight': 0.500000}
+Base1 r3 {'duration': 1, 'edge_weight': 1.000000}
+r3 r0 {'duration': 1, 'edge_weight': 1.414000}
+r3 r1 {'duration': 1, 'edge_weight': 1.000000}
+r3 Base1 {'duration': 1, 'edge_weight': 1.000000}
+r3 r3 {'duration': 1, 'edge_weight': 0.500000}
