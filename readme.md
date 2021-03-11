@@ -46,6 +46,13 @@ Common error installing antlr-python-runtime this may have to be done manually w
 See <code>examples_tcs.py</code> for examples of the algorithms and the PyTWTL API.
 An ANT build file <code>build.xml</code> is provided to generate the lexer and parser from the ANTLR3 grammar files.
 
+<h3>Aerial Monitoring</h3>
+We consider a delivery drone that is supposed to achieve pick-up and delivery tasks thatarrive stochastically during a mission. Since a delivery drone is often equipped with a camera,it can also gather useful information by monitoring the environment during the pick-up anddelivery task.  Motivated by the multi-use of drones, we address a persistent monitoringproblem where a drone’s high-level decision making is modeled as a Markov decision process(MDP) with unknown transition probabilities. The reward function is designed based on thevaluable information over the environment, and the pick-up and delivery tasks are defined bybounded time temporal logic specifications. We use a reinforcement learning (RL) algorithmthat maximizes the expected sum of rewards while various dynamically arriving temporal logicspecifications are satisfied with a desired probability in every episode during learning. Wedemonstrate the simulation results and discuss the quality of the proposed method.
+
+If you use this package, please cite;
+
+Asarkaya, Ahmet Semi, Derya Aksaray, and Yasin Yazicioglu. "Persistent Aerial Monitoring under Unknown Stochastic Dynamics in Pick-up and Delivery Missions." AIAA Scitech 2021 Forum. 2021.
+
 <h3>License & Copying</h3>
 <pre>Copyright (C) 2015-2016  Cristian Ioan Vasile <cvasile@bu.edu>
 Hybrid and Networked Systems (HyNeSs) Group, BU Robotics Lab,
