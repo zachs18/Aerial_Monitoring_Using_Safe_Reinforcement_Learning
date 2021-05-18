@@ -59,6 +59,7 @@ def prep_for_learning(ep_len, m, n, h, init_states, obstacles, pick_up_state, de
 	ts_dict.read_from_file(ts_file[0])
 	ts = expand_duration_ts(ts_dict)
 	ts_timecost =  timeit.default_timer() - ts_start_time
+	print(len(TS))
 
 	# Get the DFA #
 	dfa_start_time = timeit.default_timer()
@@ -73,6 +74,7 @@ def prep_for_learning(ep_len, m, n, h, init_states, obstacles, pick_up_state, de
 		phi = '[H^1 r' + pick_up + ']^[0, ' +  tf + '] * [H^1 r' + delivery + ']^[0,' + tf + ']'  # Construc the task according to pickup/delivery )^[0, ' + tf + ']'
 	_, dfa_inf, bdd = twtl.translate(phi, kind=DFAType.Infinity, norm=True) # states and sim. time ex. phi = '([H^1 r47]^[0, 30] * [H^1 r31]^[0, 30])^[0, 30]' 
 	dfa_timecost =  timeit.default_timer() - dfa_start_time # DFAType.Normal for normal, DFAType.Infinity for relaxed
+	print(len(dfa_inf.g))
 
 	# Get the PA #
 	pa_start_time = timeit.default_timer()
@@ -719,6 +721,8 @@ if __name__ == '__main__':
 			i_s.append(i_s_i)
 			rewards_pa.append(rewards_pa_i)
 			pa.append(pa_i)
+			print("---")
+			print(len(pa_i.g))
 			pa_s.append(pa_s_i)
 			pa_t.append(pa_t_i)
 			pa2ts.append(pa2ts_i)

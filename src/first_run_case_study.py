@@ -274,12 +274,11 @@ def get_possible_actions(pa_g_nodes, energy_pa, pa2ts, pa_s, pa_t, ep_len, Pr_de
 				for i in range(i_max+1):
 					thr_fun = thr_fun + np.math.factorial(k_ep-1) / (np.math.factorial(k_ep-1-i) * np.math.factorial(i)) * eps_unc**i * (1-eps_unc)**(k_ep-i)
 
-				if thr_fun < Pr_des and i_max > 0: #energy_pa[possible_next_states_copy[agent_s][j]] > k_ep-1: # 
+				if thr_fun < Pr_des and i_max >= 0: #energy_pa[possible_next_states_copy[agent_s][j]] > k_ep-1: # 
 					not_possible_index.append(j)
-				else:
-					possible_next_states_copy[agent_i] = []
-					possible_acts_copy[agent_i] = []
-					break
+				
+				if i_max < 0:
+					not_possible_index.append(j)
 
 			if len(possible_next_states_copy[agent_i]) != 0:		
 				for ind in sorted(not_possible_index, reverse=True):
