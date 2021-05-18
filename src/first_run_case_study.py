@@ -179,8 +179,7 @@ def prep_for_learning(ep_len, m, n, h, init_states, obstacles, pick_up_state, de
 
 	return i_s, pa, pa_s, pa_t, pa2ts, energy_pa, rewards_pa, pick_up, delivery, pick_ups, deliveries, pa.g.nodes()
 
-
-def get_possible_actions(pa_g_nodes, energy_pa, pa2ts, pa_s, pa_t, ep_len, Pr_des, eps_unc, pick_up):
+def get_possible_actions(pa_g_nodes, energy_pa, pa2ts, pa_s, pa_t, ep_len, Pr_des, eps_unc_learning, pick_up):
 	# Remove blocking states and the corresponding transitionswhen the hit flag is raised
 	accepting_states = []
 	for ind, val in enumerate(energy_pa):   # Find the accepting states
@@ -272,7 +271,7 @@ def get_possible_actions(pa_g_nodes, energy_pa, pa2ts, pa_s, pa_t, ep_len, Pr_de
 				i_max   = int(math.floor((k_ep - 1 - d_max) / 2))
 				thr_fun = 0
 				for i in range(i_max+1):
-					thr_fun = thr_fun + np.math.factorial(k_ep-1) / (np.math.factorial(k_ep-1-i) * np.math.factorial(i)) * eps_unc**i * (1-eps_unc)**(k_ep-i)
+					thr_fun = thr_fun + np.math.factorial(k_ep-1) / (np.math.factorial(k_ep-1-i) * np.math.factorial(i)) * eps_unc_learning**i * (1-eps_unc_learning)**(k_ep-i)
 
 				if thr_fun < Pr_des and i_max >= 0: #energy_pa[possible_next_states_copy[agent_s][j]] > k_ep-1: # 
 					not_possible_index.append(j)
@@ -468,7 +467,7 @@ def Q_Learning(Pr_des, eps_unc, eps_unc_learning, N_EPISODES, SHOW_EVERY, LEARN_
 			# Taking the action
 			prev_state = agent_s[which_pd]
 			intended_action = possible_acts[t_ep][prev_state][next_ind]
-			if np.random.uniform() < eps_unc_learning:
+			if np.random.uniform() < eps_unc:
 				[chosen_act, next_state] = action_uncertainity(intended_action, pa_s[which_pd], pa_t[which_pd], act_num[which_pd], agent_s[which_pd])
 				action    = chosen_act
 				s_a       = (agent_s[which_pd], action)                                   # State & Action pair

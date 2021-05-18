@@ -180,7 +180,7 @@ def prep_for_learning(ep_len, m, n, h, init_states, obstacles, pick_up_state, de
 	return i_s, pa, pa_s, pa_t, pa2ts, energy_pa, rewards_pa, pick_up, delivery, pick_ups, deliveries, pa.g.nodes()
 
 
-def get_possible_actions(pa_g_nodes, energy_pa, pa2ts, pa_s, pa_t, ep_len, Pr_des, eps_unc, pick_up):
+def get_possible_actions(pa_g_nodes, energy_pa, pa2ts, pa_s, pa_t, ep_len, Pr_des, eps_unc_learning, pick_up):
 	# Remove blocking states and the corresponding transitionswhen the hit flag is raised
 	accepting_states = []
 	for ind, val in enumerate(energy_pa):   # Find the accepting states
@@ -272,7 +272,7 @@ def get_possible_actions(pa_g_nodes, energy_pa, pa2ts, pa_s, pa_t, ep_len, Pr_de
 				i_max   = int(math.floor((k_ep - 1 - d_max) / 2))
 				thr_fun = 0
 				for i in range(i_max+1):
-					thr_fun = thr_fun + np.math.factorial(k_ep-1) / (np.math.factorial(k_ep-1-i) * np.math.factorial(i)) * eps_unc**i * (1-eps_unc)**(k_ep-i)
+					thr_fun = thr_fun + np.math.factorial(k_ep-1) / (np.math.factorial(k_ep-1-i) * np.math.factorial(i)) * eps_unc_learning**i * (1-eps_unc_learning)**(k_ep-i)
 
 				if thr_fun < Pr_des and i_max >= 0: #energy_pa[possible_next_states_copy[agent_s][j]] > k_ep-1: # 
 					not_possible_index.append(j)
@@ -357,7 +357,7 @@ def action_uncertainity(current_act, pa_s, pa_t, act_num, agent_s):
 	return chosen_act, next_state
 
 
-def Q_Learning(Pr_des, eps_unc, eps_unc_learning, N_EPISODES, SHOW_EVERY, LEARN_RATE, DISCOUNT, EPS_DECAY, epsilon, i_s, pa, energy_pa, pa2ts, pa_s, pa_t, act_num, possible_acts_not_pruned, possible_acts_pruned, possible_next_states_not_pruned,possible_next_states_pruned, pick_up, delivery,  pick_ups, deliveries, test_n, n_samples, ts_size):
+def Q_Learning(repeat,Pr_des, eps_unc, eps_unc_learning, N_EPISODES, SHOW_EVERY, LEARN_RATE, DISCOUNT, EPS_DECAY, epsilon, i_s, pa, energy_pa, pa2ts, pa_s, pa_t, act_num, possible_acts_not_pruned, possible_acts_pruned, possible_next_states_not_pruned,possible_next_states_pruned, pick_up, delivery,  pick_ups, deliveries, test_n, n_samples, ts_size):
 	
 	wb = Workbook()
 	sheet_name = 'Simulation' + str(test_n+1) 
@@ -468,7 +468,7 @@ def Q_Learning(Pr_des, eps_unc, eps_unc_learning, N_EPISODES, SHOW_EVERY, LEARN_
 			# Taking the action
 			prev_state = agent_s[which_pd]
 			intended_action = possible_acts[t_ep][prev_state][next_ind]
-			if np.random.uniform() < eps_unc_learning:
+			if np.random.uniform() < eps_unc:
 				[chosen_act, next_state] = action_uncertainity(intended_action, pa_s[which_pd], pa_t[which_pd], act_num[which_pd], agent_s[which_pd])
 				action    = chosen_act
 				s_a       = (agent_s[which_pd], action)                                   # State & Action pair
@@ -556,15 +556,16 @@ def Q_Learning(Pr_des, eps_unc, eps_unc_learning, N_EPISODES, SHOW_EVERY, LEARN_
 		d_maxs.append(max(energy_pa[i]))
 	max_energy   = max(d_maxs)
 
-	# for i in range(len(energy_pa)):
-	# 	for j in range(ep_len):
-	# 		#name_diff = "q_table_diff_perc_" + str(i) + ".npy"
-	# 		#name_q    = "Env3_Converged_Q_TABLE_GNC" + str(n_samples) + '_task'+ str(i) + '_t' + str(j) + ".npy"
-	# 		#np.save(name_diff,q_table_diff_perc)
-	# 		#np.save(os.path.join('Q_TABLES',name_q) ,q_table[i][j])
+	for i in range(len(energy_pa)):
+		for j in range(ep_len):
+			#name_diff = "q_table_diff_perc_" + str(i) + ".npy"
+			name_q    = "Env3_Converged_Q_TABLE_GNC" + str(n_samples) + '_task'+ str(i) + '_t' + str(j) + ".npy"
+			#np.save(name_diff,q_table_diff_perc)
+			np.save(os.path.join('Q_TABLES',name_q) ,q_table[i][j])
 	
 	print('Total time for Q-Learning : ' + str(QL_timecost) + ' seconds')
 	print('Action uncertainity[%] = ' + str(eps_unc*100))
+	print('Overestimated ction uncertainity[%] = ' + str(eps_unc_learning*100))
 	print('# of Samples = ' + str(n_samples))
 	print("Desired Minimum Success Ratio[%] = " + str(100*Pr_des))
 	print("Episode Length = " + str(ep_len) + "  and  Max. Energy of the System = " + str(max_energy))    
@@ -576,8 +577,7 @@ def Q_Learning(Pr_des, eps_unc, eps_unc_learning, N_EPISODES, SHOW_EVERY, LEARN_
 
 	s1.write(1,6,QL_timecost)
 	s1.write(1,7,np.mean(ep_rewards))
-	filename = 'RAL_' + str(Pr_des) + '_' + str(eps_unc_learning) +'.xls'
-	filename = filename
+	filename =  'RAL_' + str(Pr_des) + '_' + str(eps_unc_learning) +'.xls'
 	wb.save(filename) 
 
 	return opt_pol
@@ -629,7 +629,6 @@ def visualization(m, n, init_states, obstacles, pick_up_state, delivery_state, r
 	ts.set_yticks(np.arange(0.5, m, 1));
 	plt.show()
 
-### Main Code Here ###
 if __name__ == '__main__':
 	os.system('clear')
 	start_time  = time.time()
@@ -644,164 +643,169 @@ if __name__ == '__main__':
 	
 	# Specify initial states and obstacles (row,column,altitude/height)
 	init_states    = [(0,7,0)]                                         # Specify initial states and obstacles (row,column,altitude/height)
-	obstacles = [(4,0,0), (5,0,0), (4,1,0), (5,1,0), (3,3,0), (4,3,0),(2,3,0), (3,4,0), (4,4,0), (2,4,0), (3,5,0), (4,5,0), (2,5,0)]
-
+	obstacles = [(4,0,0), (5,0,0), (4,1,0), (5,1,0), (3,3,0), (4,3,0),	 (2,3,0), (3,4,0), (4,4,0), (2,4,0), (3,5,0), (4,5,0), (2,5,0)]
+		
 	# Specify pick-up and delivery locations
 	pick_up_state = []
 	delivery_state = []                                      
-	pick_up_state.append([(5,6,0)])
-	delivery_state.append([(3,0,0)])                                         
+	pick_up_state.append([(5,6,0)])                                        
+	delivery_state.append([(3,0,0)])                                        
 
 	# Specify the reward locations, and reward uncertainty
-	rewards   = [(0,0,0), (0,1,0), (0,2,0), (1,0,0), (1,2,0), (2,0,0),(2,1,0), (2,2,0), (7,2,0), (7,3,0) ] #(7,2,0), (7,3,0) , (2,7,0), (3,7,0)
+	rewards   = [ (7,2,0), (7,3,0) ]#[(0,0,0), (0,1,0), (0,2,0), (1,0,0), (1,2,0), (2,0,0),(2,1,0), (2,2,0), (7,2,0), (7,3,0) ] #(7,2,0), (7,3,0) , (2,7,0), (3,7,0)
 	rewards2  = [(1,1,0)]                 # Rewarded states
 	rew_val   = 1 
 	rew_val2  = 2                                                     # Reward value
 	rew_uncertainity = 0.00
 
+
 	##### System Inputs for Q-Learning #### 	#For debugging
-	LEARN_FLAG = True # False # If true learn a new Q table, if False load the previously found one
-	sample_size = 1000
-	N_EPISODES = 50000      # of episodes
+	LEARN_FLAG = True  # False # If true learn a new Q table, if False load the previously found one
+	sample_size = 10000 # Specify How Many samples to run
+
+	N_EPISODES = 30000      # of episodes
 	SHOW_EVERY = 5000       # Print out the info at every ... episode
 	LEARN_RATE = 0.1
 	DISCOUNT   = 0.95#0.95
 	EPS_DECAY  = 1#1  #0.99989
 	epsilon    = 0.1# exploration trade-off
 	eps_unc    = 0.03 # Uncertainity in actions
-	eps_unc_learning = 0.12 # Overestimated uncertainity used in learning
-	Pr_des     = 0.85
+	
+	eps_unc_learnings = [0.12]
+	for idx in range(len(eps_unc_learnings)):			
+		eps_unc_learning = eps_unc_learnings[idx]#0.03 # Overestimated uncertainity used in learning
+		Pr_des     = 0.55 # Minimum desired probability of satisfaction
 
-	# Pr_dess = [0.85, 0.70, 0.55]
-	# eps_unc_learnings = [0.04, 0.08, 0.12]
+		n_samples_all = [0] # Running the algorithm for different model based samples, 0 for model free learning
 
-	n_samples_all = [0] # Running the algorithm for different model based samples, 0 for model free learning
+		# Call the function 'prep_for_learning' and 'get_possible_actions' to get required parameters for learning #
+		prep_start_time = timeit.default_timer()
+		energy_pa = []
+		pa = []
+		pa_s = []
+		pa_t = []
+		pa2ts = []
+		pick_up = []
+		delivery = []
+		possible_acts_pruned = []
+		possible_acts_not_pruned = []
+		possible_next_states_pruned = []
+		possible_next_states_not_pruned = []
+		act_num = []
+		i_s = []
+		rewards_pa = []
+		pick_ups = [] 
+		deliveries = []
+		for ind_p in range(len(pick_up_state)):
+			for ind in range(len(delivery_state)):
+				[i_s_i, pa_i, pa_s_i, pa_t_i, pa2ts_i, energy_pa_i, rewards_pa_i, pick_up_i, delivery_i,  pick_ups_i, deliveries_i, pa_g_nodes_i] = prep_for_learning(ep_len, m, n, h, init_states, obstacles, pick_up_state[ind_p], delivery_state[ind], rewards, rew_val, custom_flag, custom_task, rewards2, rew_val2)
+				i_s.append(i_s_i)
+				rewards_pa.append(rewards_pa_i)
+				pa.append(pa_i)
+				pa_s.append(pa_s_i)
+				pa_t.append(pa_t_i)
+				pa2ts.append(pa2ts_i)
+				energy_pa.append(energy_pa_i)
+				pick_up.append(pick_up_i)
+				delivery.append(delivery_i)
+				pick_ups.append(pick_ups_i)
+				deliveries.append(deliveries_i)
+				[possible_acts_time_included_not_pruned_i, possible_acts_time_included_pruned_i, possible_next_states_time_included_not_pruned_i, possible_next_states_time_included_pruned_i, act_num_i] = get_possible_actions(pa_g_nodes_i,energy_pa_i, pa2ts_i, pa_s_i, pa_t_i, ep_len, Pr_des, eps_unc_learning, pick_up_i)
+				possible_acts_not_pruned.append(possible_acts_time_included_not_pruned_i)
+				possible_acts_pruned.append(possible_acts_time_included_pruned_i)
+				possible_next_states_not_pruned.append(possible_next_states_time_included_not_pruned_i)
+				possible_next_states_pruned.append(possible_next_states_time_included_pruned_i)
+				act_num.append(act_num_i)
 
-	# Call the function 'prep_for_learning' and 'get_possible_actions' to get required parameters for learning #
-	prep_start_time = timeit.default_timer()
-	energy_pa = []
-	pa = []
-	pa_s = []
-	pa_t = []
-	pa2ts = []
-	pick_up = []
-	delivery = []
-	possible_acts_pruned = []
-	possible_acts_not_pruned = []
-	possible_next_states_pruned = []
-	possible_next_states_not_pruned = []
-	act_num = []
-	i_s = []
-	rewards_pa = []
-	pick_ups = [] 
-	deliveries = []
-	for ind_p in range(len(pick_up_state)):
-		for ind in range(len(delivery_state)):
-			[i_s_i, pa_i, pa_s_i, pa_t_i, pa2ts_i, energy_pa_i, rewards_pa_i, pick_up_i, delivery_i,  pick_ups_i, deliveries_i, pa_g_nodes_i] = prep_for_learning(ep_len, m, n, h, init_states, obstacles, pick_up_state[ind_p], delivery_state[ind], rewards, rew_val, custom_flag, custom_task, rewards2, rew_val2)
-			i_s.append(i_s_i)
-			rewards_pa.append(rewards_pa_i)
-			pa.append(pa_i)
-			pa_s.append(pa_s_i)
-			pa_t.append(pa_t_i)
-			pa2ts.append(pa2ts_i)
-			energy_pa.append(energy_pa_i)
-			pick_up.append(pick_up_i)
-			delivery.append(delivery_i)
-			pick_ups.append(pick_ups_i)
-			deliveries.append(deliveries_i)
-			[possible_acts_time_included_not_pruned_i, possible_acts_time_included_pruned_i, possible_next_states_time_included_not_pruned_i, possible_next_states_time_included_pruned_i, act_num_i] = get_possible_actions(pa_g_nodes_i,energy_pa_i, pa2ts_i, pa_s_i, pa_t_i, ep_len, Pr_des, eps_unc, pick_up_i)
-			possible_acts_not_pruned.append(possible_acts_time_included_not_pruned_i)
-			possible_acts_pruned.append(possible_acts_time_included_pruned_i)
-			possible_next_states_not_pruned.append(possible_next_states_time_included_not_pruned_i)
-			possible_next_states_pruned.append(possible_next_states_time_included_pruned_i)
-			act_num.append(act_num_i)
-
-	prep_timecost =  timeit.default_timer() - prep_start_time
-	print('Total time for data prep. : ' + str(prep_timecost) + ' seconds \n')
+		prep_timecost =  timeit.default_timer() - prep_start_time
+		print('Total time for data prep. : ' + str(prep_timecost) + ' seconds \n')
 
 
-	if LEARN_FLAG:
-		# Check possible minimum threshold
-		d_maxs = []
-		for i in range(len(energy_pa)):	
-			d_maxs.append(max(energy_pa[i]))
-		d_max   = max(d_maxs)
-		i_max   = int(math.floor((ep_len - 1 - d_max) / 2))
-		thr_fun = 0
-		for i in range(i_max+1):
-			thr_fun = thr_fun + np.math.factorial(ep_len-1) / (np.math.factorial(ep_len-1-i) * np.math.factorial(i)) * eps_unc_learning**i * (1-eps_unc_learning)**(ep_len-i)
-		print('Maximum threshold that can be put ' + str(thr_fun))	
-		if thr_fun < Pr_des:
-			print('Please set a less desired probability threshold than ' + str(thr_fun))
+		if LEARN_FLAG:
+			# Check possible minimum threshold
+			d_maxs = []
+			for i in range(len(energy_pa)):	
+				d_maxs.append(max(energy_pa[i]))
+			d_max   = max(d_maxs)
+			i_max   = int(math.floor((ep_len - 1 - d_max) / 2))
+			thr_fun = 0
+			for i in range(i_max+1):
+				thr_fun = thr_fun + np.math.factorial(ep_len-1) / (np.math.factorial(ep_len-1-i) * np.math.factorial(i)) * eps_unc_learning**i * (1-eps_unc_learning)**(ep_len-i)
+			print('Maximum threshold that can be put ' + str(thr_fun))	
+			if thr_fun < Pr_des:
+				print('Please set a less desired probability threshold than ' + str(thr_fun))
+			else:
+				# Call the Q_Learning Function
+				for repeat in range(1):
+					for n_samples in n_samples_all: #for test_n in range(1):
+						test_n = 0
+						opt_pol = Q_Learning(repeat,Pr_des, eps_unc, eps_unc_learning, N_EPISODES, SHOW_EVERY, LEARN_RATE, DISCOUNT, EPS_DECAY, epsilon, i_s, pa, energy_pa, pa2ts, pa_s, pa_t, act_num, possible_acts_not_pruned, possible_acts_pruned, possible_next_states_not_pruned,possible_next_states_pruned, pick_up, delivery,  pick_ups, deliveries, test_n, n_samples, ts_size)
+						print("Total run time : " + str((time.time() - start_time))+' seconds \n \n \n')
+
+				#### Visualize ######
+				visualization(m, n, init_states, obstacles, pick_up_state[0], delivery_state[0], rewards, opt_pol)
 		else:
-			# Call the Q_Learning Function
-			for n_samples in n_samples_all: 
-				test_n = 0
-				opt_pol = Q_Learning(Pr_des, eps_unc, eps_unc_learning, N_EPISODES, SHOW_EVERY, LEARN_RATE, DISCOUNT, EPS_DECAY, epsilon, i_s, pa, energy_pa, pa2ts, pa_s, pa_t, act_num, possible_acts_not_pruned, possible_acts_pruned, possible_next_states_not_pruned,possible_next_states_pruned, pick_up, delivery,  pick_ups, deliveries, test_n, n_samples, ts_size)
-				print("Total run time : " + str((time.time() - start_time))+' seconds \n \n \n')
-
-			##### Visualize ######
-			visualization(m, n, init_states, obstacles, pick_up_state[0], delivery_state[0], rewards, opt_pol)
-	else:
-		Q_TABLEs = []
-		agent_upt = []
-		n_samples = 10 # choose for which n_samples to run simulation
-		for ind in range(len(energy_pa)):
-			Q_TABLEs.append([])
-			for j in range(ep_len):
-				name_q    = "Env3_Converged_Q_TABLE_GNC" + str(n_samples) + '_task'+ str(ind) + '_t' + str(j) + ".npy" # name should be the same as defined in Q learning function
-				Q_TABLEs[ind].append(np.load(os.path.join('Q_TABLES',name_q), allow_pickle=True))
-			avg_tot_und_rew = 0
-			avg_tot_disc_rew = 0
-			#
-			agent_upt_i = []
-			for i in range(len(pa[ind].g.nodes())):
-				if pa[ind].g.nodes()[i][1] == 0 or str(pa[ind].g.nodes()[i][0]) == 'r'+str(pick_up[ind]):
-					agent_upt_i.append(pa2ts[ind][i])
-				else:
-					agent_upt_i.append([])
-				if pa[ind].g.nodes()[i][1] == 0 and pa[ind].g.nodes()[i][0] == 'Base1':
-					starting_state = i
-			agent_upt.append(agent_upt_i)
-			#
-			hit_raise = 0
-			for k in range(sample_size):
-				hit_flag = False
-				agent_s = starting_state
-				tot_und_rew = 0
-				tot_disc_rew = 0
-				for t_ep in range(ep_len):
-					possible_acts = possible_acts_not_pruned[ind]
-					possible_next_states = possible_next_states_not_pruned[ind]
-
-					if hit_flag == False:
-						if energy_pa[ind][agent_s] == 0:
-							hit_raise += 1
-							hit_flag = True
-							agent_s = agent_upt[ind].index(pa2ts[ind][agent_s])
-						else:
-							possible_acts = possible_acts_pruned[ind]
-							possible_next_states = possible_next_states_pruned[ind]
-
-					prev_state = agent_s
-					possible_qs = Q_TABLEs[ind][t_ep][prev_state, possible_acts[t_ep][prev_state]] # Possible Q values for each action
-					next_ind    = np.argmax(possible_qs)
-					intended_action = possible_acts[t_ep][prev_state][next_ind]
-
-					if np.random.uniform() < eps_unc - 0.07:
-						[chosen_act, agent_s] = action_uncertainity(intended_action, pa_s[ind], pa_t[ind], act_num[ind], prev_state)
+			Q_TABLEs = []
+			agent_upt = []
+			n_samples = 10 # choose for which n_samples to run simulation
+			for ind in range(len(energy_pa)):
+				Q_TABLEs.append([])
+				for j in range(ep_len):
+					name_q    = "Env3_Converged_Q_TABLE_GNC" + str(n_samples) + '_task'+ str(ind) + '_t' + str(j) + ".npy" # name should be the same as defined in Q learning function
+					Q_TABLEs[ind].append(np.load(os.path.join('Q_TABLES',name_q), allow_pickle=True))
+				avg_tot_und_rew = 0
+				avg_tot_disc_rew = 0
+				#
+				agent_upt_i = []
+				for i in range(len(pa[ind].g.nodes())):
+					if pa[ind].g.nodes()[i][1] == 0 or str(pa[ind].g.nodes()[i][0]) == 'r'+str(pick_up[ind]):
+						agent_upt_i.append(pa2ts[ind][i])
 					else:
-						agent_s = possible_next_states[t_ep][prev_state][next_ind]
+						agent_upt_i.append([])
+					if pa[ind].g.nodes()[i][1] == 0 and pa[ind].g.nodes()[i][0] == 'Base1':
+						starting_state = i
+				agent_upt.append(agent_upt_i)
+				#
+				hit_raise = 0
+				for k in range(sample_size):
+					hit_flag = False
+					agent_s = starting_state
+					tot_und_rew = 0
+					tot_disc_rew = 0
+					for t_ep in range(ep_len):
+						possible_acts = possible_acts_not_pruned[ind]
+						possible_next_states = possible_next_states_not_pruned[ind]
 
-					rew_obs = rewards_pa[ind][agent_s]
-					tot_und_rew += rew_obs
-					tot_disc_rew += rew_obs * (DISCOUNT ** t_ep)
+						if hit_flag == False:
+							if energy_pa[ind][agent_s] == 0:
+								hit_raise += 1
+								hit_flag = True
+								agent_s = agent_upt[ind].index(pa2ts[ind][agent_s])
+							else:
+								possible_acts = possible_acts_pruned[ind]
+								possible_next_states = possible_next_states_pruned[ind]
 
-				avg_tot_und_rew += tot_und_rew
-				avg_tot_disc_rew += tot_disc_rew
-			success_ratio = float(hit_raise) / float(sample_size) * 100.0
-			print('Mission ' + str(ind))
-			print('Success Ratio[%] = '+ str(success_ratio))
-			print('Total Undiscounted Reward after learned policy = '+str(avg_tot_und_rew / sample_size))
-			print('Total Discounted Reward after learned policy = '+str(avg_tot_disc_rew / sample_size))
-			print('\n')
+						prev_state = agent_s
+						possible_qs = Q_TABLEs[ind][t_ep][prev_state, possible_acts[t_ep][prev_state]] # Possible Q values for each action
+						next_ind    = np.argmax(possible_qs)
+						intended_action = possible_acts[t_ep][prev_state][next_ind]
+
+						if np.random.uniform() < eps_unc - 0.07:
+							[chosen_act, agent_s] = action_uncertainity(intended_action, pa_s[ind], pa_t[ind], act_num[ind], prev_state)
+						else:
+							agent_s = possible_next_states[t_ep][prev_state][next_ind]
+
+						rew_obs = rewards_pa[ind][agent_s]
+						tot_und_rew += rew_obs
+						tot_disc_rew += rew_obs * (DISCOUNT ** t_ep)
+
+					avg_tot_und_rew += tot_und_rew
+					avg_tot_disc_rew += tot_disc_rew
+				success_ratio = float(hit_raise) / float(sample_size) * 100.0
+				print('Mission ' + str(ind))
+				print('Success Ratio[%] = '+ str(success_ratio))
+				print('Total Undiscounted Reward after learned policy = '+str(avg_tot_und_rew / sample_size))
+				print('Total Discounted Reward after learned policy = '+str(avg_tot_disc_rew / sample_size))
+				print('\n')
+
+			
