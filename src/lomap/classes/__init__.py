@@ -41,10 +41,11 @@ else:
 if ltl2ba_binary != None and scheck_binary != None:
 	if not os.access(ltl2ba_binary, os.X_OK) or not os.access(scheck_binary, os.X_OK):
 		try:
-			print "You'll be prompted for root password to make some third party binaries executable."
+#			print "You'll be prompted for root password to make some third party binaries executable."
 			print "Binaries that will be made executable are:"
 			print ltl2ba_binary
 			print scheck_binary
-			subprocess.Popen(['sudo', 'chmod', '+x', ltl2ba_binary, scheck_binary], stdout=subprocess.PIPE, stdin=subprocess.PIPE).communicate()
+#			subprocess.Popen(['sudo', 'chmod', '+x', ltl2ba_binary, scheck_binary], stdout=subprocess.PIPE, stdin=subprocess.PIPE).communicate()
+			subprocess.Popen(['chmod', '+x', ltl2ba_binary, scheck_binary], stdout=subprocess.PIPE, stdin=subprocess.PIPE).communicate()
 		except Exception as ex:
 			raise Exception(__name__, "Problem setting permissions of binaries: '%s'" % ex)
