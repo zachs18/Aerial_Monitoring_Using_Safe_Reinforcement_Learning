@@ -139,3 +139,158 @@ Edges: [(0, 0, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'w
 03/21/2020 06:57:19 PM DEBUG (9, 10): {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}
 03/21/2020 06:57:19 PM DEBUG (9, 7): {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}
 03/21/2020 06:57:19 PM DEBUG findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0 to DejaVu Sans (u'/usr/share/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000
+09/23/2024 09:59:26 PM DEBUG [hold] Prop: A Duration: 2 Negation: False Props: set(['A', 'C', 'B', 'D'])
+09/23/2024 09:59:26 PM DEBUG [within] Low: 0 High: 6 DFA: (Hold 2 A )
+09/23/2024 09:59:26 PM DEBUG [hold] Prop: B Duration: 1 Negation: False Props: set(['A', 'C', 'B', 'D'])
+09/23/2024 09:59:26 PM DEBUG [within] Low: 0 High: 3 DFA: (Hold 1 B )
+09/23/2024 09:59:26 PM DEBUG [hold] Prop: C Duration: 1 Negation: False Props: set(['A', 'C', 'B', 'D'])
+09/23/2024 09:59:26 PM DEBUG [within] Low: 1 High: 4 DFA: (Hold 1 C )
+09/23/2024 09:59:26 PM INFO Trap states were added.
+09/23/2024 09:59:26 PM INFO Trap states were added.
+09/23/2024 09:59:26 PM DEBUG [union] DFA1: (Repeat (Hold 1 B ) 0 3 ) DFA2: (Repeat (Hold 1 C ) 1 4 )
+09/23/2024 09:59:26 PM DEBUG [concatenation] DFA1: (Repeat (Hold 2 A ) 0 6 ) DFA2: (Union (Repeat (Hold 1 B ) 0 3 ) (Repeat (Hold 1 C ) 1 4 ) )
+09/23/2024 09:59:26 PM DEBUG [hold] Prop: D Duration: 1 Negation: False Props: set(['A', 'C', 'B', 'D'])
+09/23/2024 09:59:26 PM DEBUG [within] Low: 0 High: 6 DFA: (Hold 1 D )
+09/23/2024 09:59:26 PM DEBUG [concatenation] DFA1: (Concat (Repeat (Hold 2 A ) 0 6 ) (Union (Repeat (Hold 1 B ) 0 3 ) (Repeat (Hold 1 C ) 1 4 ) ) ) DFA2: (Repeat (Hold 1 D ) 0 6 )
+09/23/2024 09:59:26 PM DEBUG [hold] Prop: A Duration: 2 Negation: False Props: set(['A', 'C', 'B', 'D'])
+09/23/2024 09:59:26 PM DEBUG [eventually] Low: 0 High: 6 DFA: (Hold 2 A )
+09/23/2024 09:59:26 PM DEBUG [hold] Prop: B Duration: 1 Negation: False Props: set(['A', 'C', 'B', 'D'])
+09/23/2024 09:59:26 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 B )
+09/23/2024 09:59:26 PM DEBUG [hold] Prop: C Duration: 1 Negation: False Props: set(['A', 'C', 'B', 'D'])
+09/23/2024 09:59:26 PM DEBUG [eventually] Low: 1 High: 4 DFA: (Hold 1 C )
+09/23/2024 09:59:26 PM INFO No trap states were added.
+09/23/2024 09:59:26 PM INFO No trap states were added.
+09/23/2024 09:59:26 PM DEBUG state: Eventually 
+ init: [(0, 1), (0, 0), (0, 3)]
+ final: [(2, 2)]
+09/23/2024 09:59:26 PM DEBUG state: Hold 
+ init: [(0, 1), (0, 0), (0, 3)]
+ final: [(2, 2)]
+09/23/2024 09:59:26 PM DEBUG state: Eventually 
+ init: [(0, 3)]
+ final: [(2, 2)]
+09/23/2024 09:59:26 PM DEBUG state: Hold 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+09/23/2024 09:59:26 PM DEBUG [union] DFA1: (Eventually (Hold 1 B ) 0 3 ) DFA2: (Eventually (Hold 1 C ) 1 4 )
+09/23/2024 09:59:26 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 A ) 0 6 ) DFA2: (Union (Eventually (Hold 1 B ) 0 3 ) (Eventually (Hold 1 C ) 1 4 ) )
+09/23/2024 09:59:26 PM DEBUG [hold] Prop: D Duration: 1 Negation: False Props: set(['A', 'C', 'B', 'D'])
+09/23/2024 09:59:26 PM DEBUG [eventually] Low: 0 High: 6 DFA: (Hold 1 D )
+09/23/2024 09:59:26 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 2 A ) 0 6 ) (Union (Eventually (Hold 1 B ) 0 3 ) (Eventually (Hold 1 C ) 1 4 ) ) ) DFA2: (Eventually (Hold 1 D ) 0 6 )
+09/23/2024 09:59:26 PM DEBUG [spec] spec: [H^2 A]^[0, 6] * ([H^1 B]^[0, 3] | [H^1 C]^[1, 4]) * [H^1 D]^[0, 6]
+09/23/2024 09:59:26 PM DEBUG [spec] mode: Normal DFA: 
+Name: (Concat (Concat (Repeat (Hold 2 A ) 0 6 ) (Union (Repeat (Hold 1 B ) 0 3 ) (Repeat (Hold 1 C ) 1 4 ) ) ) (Repeat (Hold 1 D ) 0 6 ) )
+Directed: True
+Multi: False
+Props: {'A': 1, 'C': 2, 'B': 4, 'D': 8}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Initial: [0]
+Final: set([39])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {}), (11, {}), (12, {}), (13, {}), (14, {}), (15, {}), (16, {}), (17, {}), (18, {}), (19, {}), (20, {}), (21, {}), (22, {}), (23, {}), (24, {}), (25, {}), (26, {}), (27, {}), (28, {}), (29, {}), (30, {}), (31, {}), (32, {}), (33, {}), (34, {}), (35, {}), (36, {}), (37, {}), (38, {}), (39, {})]
+Edges: [(0, 1, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (0, 3, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (1, 6, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 9, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 15, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (3, 4, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (3, 6, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 9, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (5, 12, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 15, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (6, 9, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (6, 7, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (7, 8, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (7, 12, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (8, 15, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (9, 10, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (9, 12, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (10, 11, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (11, 15, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (12, 13, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (13, 14, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (14, 15, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (15, 24, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '(B) & ((1))', 'weight': 0, 'label': '(B) & ((1))'}), (15, 27, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '((else)) & ((1))', 'weight': 0, 'label': '((else)) & ((1))'}), (16, 28, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (16, 29, {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (17, 16, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((B) & (C)) | ((B) & (trap_guard))', 'weight': 0, 'label': '((B) & (C)) | ((B) & (trap_guard))'}), (17, 18, {'input': set([11, 2, 3, 10]), 'guard': '(trap_guard) & (C)', 'weight': 0, 'label': '(trap_guard) & (C)'}), (18, 16, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((1)) & (C)', 'weight': 0, 'label': '((1)) & (C)'}), (19, 18, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((1)) & (C)', 'weight': 0, 'label': '((1)) & (C)'}), (20, 16, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((trap_guard) & (C)) | ((B) & (C))', 'weight': 0, 'label': '((trap_guard) & (C)) | ((B) & (C))'}), (20, 17, {'input': set([12, 4, 5, 13]), 'guard': '(B) & ((else))', 'weight': 0, 'label': '(B) & ((else))'}), (20, 19, {'input': set([0, 1, 8, 9]), 'guard': '(trap_guard) & ((else))', 'weight': 0, 'label': '(trap_guard) & ((else))'}), (21, 16, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((B) & (C)) | ((B) & ((else)))', 'weight': 0, 'label': '((B) & (C)) | ((B) & ((else)))'}), (21, 19, {'input': set([0, 1, 8, 9]), 'guard': '(trap_guard) & ((else))', 'weight': 0, 'label': '(trap_guard) & ((else))'}), (21, 22, {'input': set([11, 2, 3, 10]), 'guard': '(trap_guard) & (C)', 'weight': 0, 'label': '(trap_guard) & (C)'}), (22, 16, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((1)) & (C)', 'weight': 0, 'label': '((1)) & (C)'}), (23, 17, {'input': set([12, 4, 5, 13]), 'guard': '(B) & ((else))', 'weight': 0, 'label': '(B) & ((else))'}), (23, 19, {'input': set([0, 1, 8, 9]), 'guard': '(trap_guard) & ((else))', 'weight': 0, 'label': '(trap_guard) & ((else))'}), (23, 22, {'input': set([11, 2, 3, 10]), 'guard': '(trap_guard) & (C)', 'weight': 0, 'label': '(trap_guard) & (C)'}), (23, 25, {'input': set([15, 14, 6, 7]), 'guard': '(B) & (C)', 'weight': 0, 'label': '(B) & (C)'}), (24, 16, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((B) & ((else))) | ((B) & (C))', 'weight': 0, 'label': '((B) & ((else))) | ((B) & (C))'}), (24, 20, {'input': set([11, 2, 3, 10]), 'guard': '((else)) & (C)', 'weight': 0, 'label': '((else)) & (C)'}), (24, 23, {'input': set([0, 1, 8, 9]), 'guard': '((else)) & ((else))', 'weight': 0, 'label': '((else)) & ((else))'}), (25, 16, {'input': set([2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15]), 'guard': '((trap_guard) & (C)) | (((B) & (trap_guard)) | ((B) & (C)))', 'weight': 0, 'label': '((trap_guard) & (C)) | (((B) & (trap_guard)) | ((B) & (C)))'}), (26, 16, {'input': set([2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15]), 'guard': '((trap_guard) & (C)) | (((B) & ((else))) | ((B) & (C)))', 'weight': 0, 'label': '((trap_guard) & (C)) | (((B) & ((else))) | ((B) & (C)))'}), (26, 19, {'input': set([0, 1, 8, 9]), 'guard': '(trap_guard) & ((else))', 'weight': 0, 'label': '(trap_guard) & ((else))'}), (27, 26, {'input': set([15, 14, 6, 7]), 'guard': '(B) & (C)', 'weight': 0, 'label': '(B) & (C)'}), (27, 20, {'input': set([11, 2, 3, 10]), 'guard': '((else)) & (C)', 'weight': 0, 'label': '((else)) & (C)'}), (27, 21, {'input': set([12, 4, 5, 13]), 'guard': '(B) & ((else))', 'weight': 0, 'label': '(B) & ((else))'}), (27, 23, {'input': set([0, 1, 8, 9]), 'guard': '((else)) & ((else))', 'weight': 0, 'label': '((else)) & ((else))'}), (28, 39, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (28, 31, {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (29, 30, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (29, 31, {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (30, 33, {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (30, 39, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (31, 32, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (31, 33, {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (32, 35, {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (32, 39, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (33, 34, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (33, 35, {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (34, 37, {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (34, 39, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (35, 36, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (35, 37, {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (36, 39, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (37, 38, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (38, 39, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'})]
+		
+09/23/2024 09:59:26 PM DEBUG [spec] No of nodes: 40
+09/23/2024 09:59:26 PM DEBUG [spec] No of edges: 72
+09/23/2024 09:59:26 PM DEBUG [spec] spec: [H^2 A]^[0, 6] * ([H^1 B]^[0, 3] | [H^1 C]^[1, 4]) * [H^1 D]^[0, 6]
+09/23/2024 09:59:26 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Concat (Eventually (Hold 2 A ) 0 6 ) (Union (Eventually (Hold 1 B ) 0 3 ) (Eventually (Hold 1 C ) 1 4 ) ) ) (Eventually (Hold 1 D ) 0 6 ) )
+Directed: True
+Multi: False
+Props: {'A': 1, 'C': 2, 'B': 4, 'D': 8}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Initial: [0]
+Final: set([10])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {})]
+Edges: [(0, 0, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (1, 0, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (2, 0, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}), (3, 8, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '(B) & ((1))', 'weight': 0, 'label': '(B) & ((1))'}), (3, 5, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '((else)) & ((1))', 'weight': 0, 'label': '((else)) & ((1))'}), (4, 8, {'input': set([12, 4, 5, 13]), 'guard': '(B) & ((else))', 'weight': 0, 'label': '(B) & ((else))'}), (4, 5, {'input': set([0, 1, 8, 9]), 'guard': '((else)) & ((else))', 'weight': 0, 'label': '((else)) & ((else))'}), (4, 7, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '(((else)) & (C)) | ((B) & (C))', 'weight': 0, 'label': '(((else)) & (C)) | ((B) & (C))'}), (5, 8, {'input': set([12, 4, 5, 13]), 'guard': '(B) & ((else))', 'weight': 0, 'label': '(B) & ((else))'}), (5, 4, {'input': set([11, 2, 3, 10]), 'guard': '((else)) & (C)', 'weight': 0, 'label': '((else)) & (C)'}), (5, 5, {'input': set([0, 1, 8, 9]), 'guard': '((else)) & ((else))', 'weight': 0, 'label': '((else)) & ((else))'}), (5, 6, {'input': set([15, 14, 6, 7]), 'guard': '(B) & (C)', 'weight': 0, 'label': '(B) & (C)'}), (6, 5, {'input': set([0, 1, 8, 9]), 'guard': '((else)) & ((else))', 'weight': 0, 'label': '((else)) & ((else))'}), (6, 7, {'input': set([2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15]), 'guard': '(((else)) & (C)) | (((B) & ((else))) | ((B) & (C)))', 'weight': 0, 'label': '(((else)) & (C)) | (((B) & ((else))) | ((B) & (C)))'}), (7, 9, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (7, 7, {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (8, 4, {'input': set([11, 2, 3, 10]), 'guard': '((else)) & (C)', 'weight': 0, 'label': '((else)) & (C)'}), (8, 5, {'input': set([0, 1, 8, 9]), 'guard': '((else)) & ((else))', 'weight': 0, 'label': '((else)) & ((else))'}), (8, 7, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((B) & (C)) | ((B) & ((else)))', 'weight': 0, 'label': '((B) & (C)) | ((B) & ((else)))'}), (9, 10, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}), (9, 7, {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'})]
+		
+09/23/2024 09:59:26 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([10])
+ Left:
+   Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([7])
+   Left:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([0])
+     Final: set([3])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([0])
+       Final: set([3])
+   Right:
+     Op: Union Flags[WDF, WWF, UNR]: True True False
+     Init: set([3])
+     Final: set([7])
+     Choices:
+       8 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       4 -> both=set([]) left=set([]) right=set([2, 3, 6, 7, 10, 11, 14, 15])
+       6 -> both=set([7, 6, 14, 15]) left=set([4, 12, 5, 13]) right=set([3, 2, 11, 10])
+     Left:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([3])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([3])
+         Final: set([7])
+     Right:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([3])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([3])
+         Final: set([7])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([7])
+   Final: set([10])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([7])
+     Final: set([10])
+
+09/23/2024 09:59:26 PM DEBUG [spec] No of nodes: 11
+09/23/2024 09:59:26 PM DEBUG [spec] No of edges: 24
+09/23/2024 09:59:26 PM DEBUG alphabet: {'A': 1, 'C': 2, 'B': 4, 'D': 8}
+09/23/2024 09:59:26 PM DEBUG (0, 0): {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}
+09/23/2024 09:59:26 PM DEBUG (0, 1): {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}
+09/23/2024 09:59:26 PM DEBUG (1, 0): {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}
+09/23/2024 09:59:26 PM DEBUG (1, 2): {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}
+09/23/2024 09:59:26 PM DEBUG (2, 0): {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}
+09/23/2024 09:59:26 PM DEBUG (2, 3): {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'A', 'weight': 0, 'label': u'A'}
+09/23/2024 09:59:26 PM DEBUG (3, 8): {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '(B) & ((1))', 'weight': 0, 'label': '(B) & ((1))'}
+09/23/2024 09:59:26 PM DEBUG (3, 5): {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '((else)) & ((1))', 'weight': 0, 'label': '((else)) & ((1))'}
+09/23/2024 09:59:26 PM DEBUG (4, 8): {'input': set([12, 4, 5, 13]), 'guard': '(B) & ((else))', 'weight': 0, 'label': '(B) & ((else))'}
+09/23/2024 09:59:26 PM DEBUG (4, 5): {'input': set([0, 1, 8, 9]), 'guard': '((else)) & ((else))', 'weight': 0, 'label': '((else)) & ((else))'}
+09/23/2024 09:59:26 PM DEBUG (4, 7): {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '(((else)) & (C)) | ((B) & (C))', 'weight': 0, 'label': '(((else)) & (C)) | ((B) & (C))'}
+09/23/2024 09:59:26 PM DEBUG (5, 8): {'input': set([12, 4, 5, 13]), 'guard': '(B) & ((else))', 'weight': 0, 'label': '(B) & ((else))'}
+09/23/2024 09:59:26 PM DEBUG (5, 4): {'input': set([11, 2, 3, 10]), 'guard': '((else)) & (C)', 'weight': 0, 'label': '((else)) & (C)'}
+09/23/2024 09:59:26 PM DEBUG (5, 5): {'input': set([0, 1, 8, 9]), 'guard': '((else)) & ((else))', 'weight': 0, 'label': '((else)) & ((else))'}
+09/23/2024 09:59:26 PM DEBUG (5, 6): {'input': set([15, 14, 6, 7]), 'guard': '(B) & (C)', 'weight': 0, 'label': '(B) & (C)'}
+09/23/2024 09:59:26 PM DEBUG (6, 5): {'input': set([0, 1, 8, 9]), 'guard': '((else)) & ((else))', 'weight': 0, 'label': '((else)) & ((else))'}
+09/23/2024 09:59:26 PM DEBUG (6, 7): {'input': set([2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15]), 'guard': '(((else)) & (C)) | (((B) & ((else))) | ((B) & (C)))', 'weight': 0, 'label': '(((else)) & (C)) | (((B) & ((else))) | ((B) & (C)))'}
+09/23/2024 09:59:26 PM DEBUG (7, 9): {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}
+09/23/2024 09:59:26 PM DEBUG (7, 7): {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}
+09/23/2024 09:59:26 PM DEBUG (8, 4): {'input': set([11, 2, 3, 10]), 'guard': '((else)) & (C)', 'weight': 0, 'label': '((else)) & (C)'}
+09/23/2024 09:59:26 PM DEBUG (8, 5): {'input': set([0, 1, 8, 9]), 'guard': '((else)) & ((else))', 'weight': 0, 'label': '((else)) & ((else))'}
+09/23/2024 09:59:26 PM DEBUG (8, 7): {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((B) & (C)) | ((B) & ((else)))', 'weight': 0, 'label': '((B) & (C)) | ((B) & ((else)))'}
+09/23/2024 09:59:26 PM DEBUG (9, 10): {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': u'D', 'weight': 0, 'label': u'D'}
+09/23/2024 09:59:26 PM DEBUG (9, 7): {'input': set([0, 1, 2, 3, 4, 5, 6, 7]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}
+09/23/2024 09:59:26 PM DEBUG findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0 to DejaVu Sans (u'/home/zachary/anaconda3/envs/2024fs-cs8001-2.7/lib/python2.7/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000
+09/23/2024 09:59:38 PM DEBUG 
+End of translate
+
+
+09/23/2024 09:59:38 PM INFO The bound of formula "[H^2 A]^[0, 6] * ([H^1 B]^[0, 3] | [H^1 C]^[1, 4]) * [H^1 D]^[0, 6]" is (6, 18)!
+09/23/2024 09:59:38 PM INFO Translated formula "[H^2 A]^[0, 6] * ([H^1 B]^[0, 3] | [H^1 C]^[1, 4]) * [H^1 D]^[0, 6]" to normal DFA of size (40, 72)!
+09/23/2024 09:59:38 PM INFO Translated formula "[H^2 A]^[0, 6] * ([H^1 B]^[0, 3] | [H^1 C]^[1, 4]) * [H^1 D]^[0, 6]" to infinity DFA of size (11, 24)!
+09/23/2024 09:59:38 PM DEBUG 
+
+Start policy computation
+
+09/23/2024 09:59:38 PM DEBUG [extend_ts] TS: (5, 23) ETS:(27, 67)
+09/23/2024 09:59:38 PM INFO Constructing product automaton with normal DFA!
+09/23/2024 09:59:38 PM INFO Product automaton size is: (204, 378)
