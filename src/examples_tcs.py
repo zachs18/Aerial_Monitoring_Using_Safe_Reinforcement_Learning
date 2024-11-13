@@ -136,14 +136,17 @@ def setup_logging():
 if __name__ == '__main__':
     setup_logging()
     # case study 1: Synthesis
+    print("Case study 1")
     phi = '[H^2 A]^[0, 6] * ([H^1 B]^[0, 3] | [H^1 C]^[1, 4]) * [H^1 D]^[0, 6]'
     case1_synthesis(phi, '../data/ts_synthesis.txt')
     # case study 2: Verification
+    print("Case study 2")
     phi1 = '[H^1 A]^[1, 2]'
     case2_verification(phi1, '../data/ts_verification.txt')
     phi2 = '[H^3 !B]^[1, 4]'
     case2_verification(phi2, '../data/ts_verification.txt')
     # case study 3: Learning
+    print("Case study 3")
     phi_learn = '[H^1 A]^[0, 2] * [H^2 B]^[0, 3]'
     case3_learning(phi_learn, '../data/traces_simple.txt')
     phi_learn = '[H^2 A]^[0, 4] * [H^3 B]^[2, 6] * [H^2 C]^[0, 3]'

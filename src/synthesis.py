@@ -489,6 +489,7 @@ def compute_control_policy(pa, dfa, kind):
     if kind == DFAType.Normal:
         optimal_ts_path = simple_control_policy(pa)
         optimal_tau = None
+        return None, None, None
     elif kind == DFAType.Infinity:
         policies = relaxed_control_policy(dfa.tree, dfa, pa)
         if not policies:

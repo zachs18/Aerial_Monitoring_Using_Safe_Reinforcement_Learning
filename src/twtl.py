@@ -193,7 +193,7 @@ def temporal_relaxation(word, formula=None, dfa=None):
     prev_state = None
     state = dfa.init.keys()[0]
     prev_w = set()
-    for w in word + [set([])]: # hack to catch the last state
+    for w in list(word) + [set([])]: # hack to catch the last state
         # start/stop counters and increment all active counters
         _update_tree(dfa.tree, state, prev_state, dfa.bitmap_of_props(prev_w))
 #         logging.debug('Update: state=%s prev_state=%s w=%s prev_w=%s final=%s',
@@ -322,8 +322,14 @@ if __name__ == '__main__':
 #     print translate('[H^3 !A]^[0, 8] * [H^2 B & [H^4 C]^[3, 9]]^[2, 19]',
 #                     kind=DFAType.Normal, norm=True)
 
-    res = translate('[H^2 A]^[0, 4] | [H^2 B]^[2, 5]',
+#    res = translate('[H^2 A]^[0, 4] | [H^2 B]^[2, 5]',
+#                    kind=DFAType.Infinity, norm=True)
+
+    res = translate('[H^2 B]^[0, 20] & [H^10 S * H^1 D]^[0, 20]',
                     kind=DFAType.Infinity, norm=True)
 
     print res
     print res[1].g.nodes()
+    import json
+    print
+    print type(res[1])
